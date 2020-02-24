@@ -1,33 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Lin Chen</title>
-    <link>https://linchenn.github.io/</link>
-    <description>Recent content on Lin Chen</description>
+    <title>Posts on Lin Chen</title>
+    <link>https://linchenn.github.io/posts/</link>
+    <description>Recent content in Posts on Lin Chen</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 23 Feb 2020 22:22:42 -0800</lastBuildDate>
+    <lastBuildDate>Sun, 23 Feb 2020 20:37:16 -0800</lastBuildDate>
     
-	<atom:link href="https://linchenn.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://linchenn.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>New</title>
-      <link>https://linchenn.github.io/postss/new/</link>
-      <pubDate>Sun, 23 Feb 2020 22:22:42 -0800</pubDate>
-      
-      <guid>https://linchenn.github.io/postss/new/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>News0</title>
-      <link>https://linchenn.github.io/news/news0/</link>
-      <pubDate>Sun, 23 Feb 2020 21:13:56 -0800</pubDate>
-      
-      <guid>https://linchenn.github.io/news/news0/</guid>
-      <description></description>
-    </item>
     
     <item>
       <title>Test0</title>
