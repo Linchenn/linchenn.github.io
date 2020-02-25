@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Formulate the adversarial attacking &amp; training - Lin Chen</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="Formulate the adversarial attacking &amp; training" />
+<meta property="og:description" content="In this article, I will introduce a brief mathematical view of the adversarial examples and adversarial training." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/formulate-the-adversarial-attacking-training/" />
+<meta property="article:published_time" content="2020-02-24T20:37:16-08:00" />
+<meta property="article:modified_time" content="2020-02-24T20:37:16-08:00" />
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Formulate the adversarial attacking &amp; training"/>
+<meta name="twitter:description" content="In this article, I will introduce a brief mathematical view of the adversarial examples and adversarial training."/>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<link rel="shortcut icon" sizes="16x16 24x24 32x32 48x48 64x64" href="/favicon.ico">
+		
+	<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+				processEscapes: true,
+				processEnvironments: true
+			},
+			TeX: { extensions: ["color.js"] }
+		});
+	</script>
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="Lin Chen" rel="home">
+				<div class="logo__title">Lin Chen</div>
+				<div class="logo__tagline">A vegetarian dog in the amazing world</div>
+			</a>
+		</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item menu__item--active">
+			<a class="menu__link" href="/posts/formulate-the-adversarial-attacking-training/">
+				
+				<span class="menu__text">Formulate the adversarial attacking &amp; training</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Formulate the adversarial attacking &amp; training</h1>
+			<footer class="post__footer">
+				
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/adversarial-training/" rel="tag">adversarial training</a></li>
+	</ul>
+</div>
+			</footer>
+		</header>
+<div class="post__toc toc">
+	
+	
+</div>
+<div class="content post__content clearfix">
+			<p>In this article, I will introduce a brief mathematical view of the adversarial examples and adversarial training.</p>
+<h2 id="notation">Notation</h2>
+<p>I will talk about a image classifier on $k$ classes and the final layer is based on softmax function. I will use the following notations:</p>
+<ul>
+<li>$h_\theta : \mathcal{X} \rightarrow \mathbb{R}^k$
+<ul>
+<li>$h_\theta$ represents the model, with input from the input space $\mathcal{X}$, output and all trainable parameters $\theta$</li>
+</ul>
+<!-- raw HTML omitted -->
+<ul>
+<li>$ \mathbb{R}^k$ is the output space of the model, with k dimensions (For example, if we have 1000 classes, then $k$ is 1000 and the output is a 1000-dimensional vector containing the class logits for the 1000 classes.)</li>
+</ul>
+</li>
+<li>$\ell: \mathbb{R}^k \times \mathbb{Z}_+ \rightarrow \mathbb{R}_+$
+<ul>
+<li>$\ell$ represents the loss function, as a mapping from a model prediction $\mathbb{R}^k$ and the index of the true label $\mathbb{Z}_+$ to a non-negative loss $\mathbb{R}_+$</li>
+</ul>
+</li>
+<li>$\ell(h_\theta(x), y)$
+<ul>
+<li>$x \in \mathcal{X}$, is the input example</li>
+<li>$y \in \mathbb{Z}$, is the true class</li>
+<li>The most commonly  used loss in deep learning is the cross entropy loss, $\ell(h_\theta(x), y) = \log \left ( \sum_{j=1}^k \exp(h_\theta(x)_j) \right ) - h_\theta(x)_y$</li>
+</ul>
+</li>
+</ul>
+<h2 id="adversarial-examples">Adversarial Examples</h2>
+<p>The purpose of adversarial attacking is to fool the classifier, by adding some “noises”, namely 
+<b style="color: #e22d30;font-weight: 900">perturbations</b>, on the original examples. The modified example is therefore named &ldquo;
+<b style="color: #e22d30;font-weight: 900">adversarial example</b>&rdquo;. In this section, I will mathematically formulate the problem of finding effective perturbations for a given model (the parameters are fixed and accessible).</p>
+<!-- raw HTML omitted -->
+<h3 id="loss-function">Loss function</h3>
+<p>To begin, I need to describe our purpose of &ldquo;
+<b style="color: #e22d30;font-weight: 900">fooling the classifier</b>&rdquo; more clearly: we want to find perturbations on the input example to take the classifier predict the true class with less confidence.</p>
+<p>This purpose is exactly the opposite of the purpose of training the model, which is to make the classifier more certain about the correct class or, mathematically, minimize the loss on all $m$ examples: $ \min_\theta \frac{1}{m} \sum_{i=1}^m \ell(h_\theta(x_i), y_i)$. So, instead of minimizing the loss as we did in training models, we’re going to find perturbations to maximize the loss, as ($\delta^*$ is the optimal perturbation):</p>
+<p>$$ \DeclareMathOperator*{\argmax}{argmax} \delta^* = \argmax_{\delta} \ell(h_\theta(x +\delta), y) $$</p>
+<h3 id="perturbation-constraint">Perturbation constraint</h3>
+<p>Obviously, it is meaningless that we take arbitrary perturbations on the input examples, since we could simply modify an originally dog image to a cat image by adding perturbations, to let the classifier predict the input dog image as another class rather than dog.</p>
+<p>The thing is, we want to modify an input example to fool the classifier, but we do not want to modify it too much to be of another class, which is the constraint of the perturbations. To make sure that we will not change the true class, we often would like visually distinguishable perturbations for the image classifier, such as adding slight amounts of noise, rotating, etc.</p>
+<p>Needless to say, it is almost impossible to give a mathematically rigorous definition of all allowable perturbations. However, we could easily define some subset of the possible space of allowed perturbations. A usually used subset is the N-norm balls, as :</p>
+<p>$$\Delta = \{ \delta : |\delta|_N \leq \epsilon \} $$</p>
+<p>The N-norm balls could be 1-norm ball, 2-norm ball &hellip; $\infty$-norm ball, etc., and sometimes we even use the combination of the N-norm balls for a more comprehensive adversarial attacking. The $\epsilon$ is a hyperparameter, which is positively related with the degree of perturbations, so we need to define a small enough $\epsilon$ to make sure that the perturbations are visually indistinguishable.</p>
+<h3 id="formulation-for-finding-adversarial-examples">Formulation for finding adversarial examples</h3>
+<p>In conclusion, to find the perturbation for an example, we are actually solving:</p>
+<p>$$ \definecolor{average}{RGB}{226,45,48}
+\DeclareMathOperator*{\argmax}{argmax}
+\delta^*
+= \argmax_{\delta \in \color{average}\Delta} \ell(h_\theta(x +\delta), y)$$</p>
+<p>with a specified allowable perturbation space, such as $\infty$-norm ball. N-norm balls.</p>
+<h2 id="adversarial-training">Adversarial Training</h2>
+<h3 id="risk-function">Risk function</h3>
+<p>For traditional machine learning, we commonly have a dataset which we assume simulates the real distribution over examples, and, then we define the empirical 
+<b style="color: #e22d30;font-weight: 900">risk</b> of a classifier as:</p>
+<p>$$\hat{R}(h_\theta,D) = \frac{1}{|D|}\sum_{(x,y) \in D} \ell(h_\theta(x)),y)$$</p>
+<p>For adversarial training, we hope that the classifier could resist even the worst perturbation on each example. In other words, if a classifier could resist any reasonable perturbations on an example, this classifier is robust on this example. (Unfortunately, we could only find “necessarily-but-definitely-not-close-to-sufficient” conditions to consider a classifier robust on an example, since we currently use a subset of all allowable perturbations.) As a result, the risk of a classifier for adversarial training, which we want to minimize, is:</p>
+<p>$$ \hat{R}_{\mathrm{adv}}(h_\theta, D) = \frac{1}{|D|}\sum_{(x,y)\in D} \max_{\delta \in \Delta} \ell(h_\theta(x + \delta)),y) $$</p>
+<h3 id="formulation-for-adversarial-training">Formulation for adversarial training</h3>
+<p>To train a robust classifier against adversarial attacks, we are actually solving the mathematical optimization problem:</p>
+<p>$$ \min_\theta \hat{R}_{\mathrm{adv}}(h_\theta, D_{\mathrm{train}})
+\equiv \min_\theta \frac{1}{|D_{\mathrm{train}}|}\sum_{(x,y)\in D_{\mathrm{train}}} \max_{\delta \in \Delta} \ell(h_\theta(x + \delta)),y) $$</p>
+<p>Since we are using training dataset to optimize the parameters, we use $D_{\mathrm{train}}$ here.</p>
+<!-- raw HTML omitted -->
+		</div>
+
+
+		<div class="post__meta meta" style="text-align: left;">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-02-24T20:37:16-08:00">2020-02-24</time>
+</div>
+</div>
+		
+	</article>
+</main>
+
+
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 Lin Chen.
+			<span class="footer__copyright-credits">Generated by <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> with <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>
