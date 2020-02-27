@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Influence Function - Lin Chen</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="Influence Function" />
+<meta property="og:description" content="When reading Understanding Black-box Predictions via Influence Functions, I encountered a couple of problems in the derivation. In this article, I will derive two of the equality in details I met in 2.2 Perturbing a traing input section." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/influence_function/" />
+<meta property="article:published_time" content="2020-02-26T21:41:11-08:00" />
+<meta property="article:modified_time" content="2020-02-26T21:41:11-08:00" />
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Influence Function"/>
+<meta name="twitter:description" content="When reading Understanding Black-box Predictions via Influence Functions, I encountered a couple of problems in the derivation. In this article, I will derive two of the equality in details I met in 2.2 Perturbing a traing input section."/>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<link rel="shortcut icon" sizes="16x16 24x24 32x32 48x48 64x64" href="/favicon.ico">
+		
+	<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+				processEscapes: true,
+				processEnvironments: true
+			},
+			TeX: { extensions: ["color.js"] }
+		});
+	</script>
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="Lin Chen" rel="home">
+				<div class="logo__title">Lin Chen</div>
+				<div class="logo__tagline">For Blogs</div>
+			</a>
+		</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/posts/formulate-the-adversarial-attacking-training/">
+				
+				<span class="menu__text">Formulate the adversarial attacking &amp; training</span>
+				
+			</a>
+		</li>
+		<li class="menu__item menu__item--active">
+			<a class="menu__link" href="/posts/influence_function/">
+				
+				<span class="menu__text">Influence Function</span>
+				
+			</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Influence Function</h1>
+			<footer class="post__footer">
+				
+<div class="post__tags tags clearfix">
+	<svg class="tags__badge icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/influence-function/" rel="tag">influence function</a></li>
+	</ul>
+</div>
+			</footer>
+		</header>
+<div class="post__toc toc">
+	
+	
+</div>
+<div class="content post__content clearfix">
+			<p>When reading <a href="https://arxiv.org/abs/1703.04730">Understanding Black-box Predictions via Influence Functions</a>, I encountered a couple of problems in the derivation. In this article, I will derive two of the equality in details I met in 2.2 Perturbing a traing input section.</p>
+<h2 id="notation">Notation</h2>
+<p>I will use the following notations:</p>
+<ul>
+<li>$\theta^*_Z = \Theta(Z)$
+<ul>
+<li>$Z$ is the training dataset, $Z = \{z_1, z_2, &hellip;, z_n\}$, $z_i = (x_i, y_i)$</li>
+<li>$z_i$ is a training point, $x_i, y_i$ is example and label respectively</li>
+<li>$\theta^*$ is the optimal parameters, given training dataset Z</li>
+<li>I consider procedure of training the $\theta$ as a function, $\Theta(Z)$: given training dataset $Z$, the function will return $\theta^*$</li>
+</ul>
+</li>
+</ul>
+<h2 id="correlation-between-upweighting-and-perturbing">Correlation between upweighting and perturbing</h2>
+<p>The author directly shows :</p>
+<p>\begin{equation*}
+\left. \frac{d \hat{\theta}_{\epsilon,z_{\delta},-z}}{d\epsilon} \right|_{\epsilon=0}
+= I_{up,params}(z_\epsilon) - I_{up,params}(z)
+\end{equation*}</p>
+<p>This means $I_{pert,params}(z) = I_{up,params}(z_\epsilon) - I_{up,params}(z) $, so I want to prove this equation here.</p>
+<p>\begin{equation*}
+\begin{aligned}
+I_{pert,params}(z)
+&amp; = \left.\dfrac{d\hat{\theta}_{\epsilon, z_\delta,-z}}{d\epsilon}\right|_{\epsilon=0} \\<br>
+&amp; = \lim_{\epsilon \to 0} \frac{\Theta\left(Z+\epsilon\{z_\delta\} - \epsilon\{z\}\right) - \Theta(Z)}{\epsilon}
+\end{aligned}
+\end{equation*}</p>
+<p>We sippose that there is a dataset $Z&rsquo; = Z - \epsilon\{z\}$, then:</p>
+<p>\begin{equation*}
+\begin{aligned}
+I_{pert,params}(z)
+&amp; = \lim_{\epsilon \to 0} \frac{\Theta\left(Z+\epsilon\{z_\delta\} - \epsilon\{z\}\right) - \Theta(Z)}{\epsilon} \\<br>
+&amp; = \lim_{\epsilon \to 0} \frac{\Theta\left(Z&rsquo; + \epsilon\{z_\delta\}\right) - \Theta(Z&rsquo; + \epsilon\{z\})}{\epsilon} \\<br>
+&amp; = \lim_{\epsilon \to 0} \frac{
+\left[ \Theta\left(Z&rsquo; + \epsilon\{z_\delta\}\right) - \Theta(Z) \right]
+- \left[ \Theta(Z&rsquo; + \epsilon\{z\}) - \Theta(Z) \right]
+}{\epsilon} \\<br>
+&amp; = \lim_{\epsilon \to 0} \frac{
+\Theta\left(Z&rsquo; + \epsilon\{z_\delta\}\right) - \Theta(Z&rsquo;)
+}{\epsilon}
+- \lim_{\epsilon \to 0} \frac{
+\Theta(Z&rsquo; + \epsilon\{z\}) - \Theta(Z&rsquo;)
+}{\epsilon} \\<br>
+&amp; = \left.\dfrac{d\hat{\theta}_{\epsilon, z_\delta}}{d\epsilon}\right|_{\epsilon=0} - \left.\dfrac{d\hat{\theta}_{\epsilon, z}}{d\epsilon}\right|_{\epsilon=0}\\<br>
+&amp; = I_{up,params}(z_\epsilon) - I_{up,params}(z)
+\end{aligned}
+\end{equation*}</p>
+<p>As a result, perturbing an example is, in essense, upweighting a new example and downweighting the original example.</p>
+<h2 id="deriving-the-influence-of-perturbing-at-a-test-point">Deriving the influence of perturbing at a test point</h2>
+<p>I will derive $I_{pert,loss}(z, z_{test})^\top$ in detail.</p>
+<p>The article shows $\hat{\theta}_{z_\delta,-z} - \hat{\theta}
+\approx -\frac{1}{n}H_{\hat{\theta}}^{-1}[\nabla_x\nabla_\theta L(z,\hat{\theta})]\delta$, so we could obtain:</p>
+<p>\begin{equation}
+\begin{aligned}
+\definecolor{average}{RGB}{226,45,48}
+\left. \frac{d \theta}{d \delta} \right|_{\delta=0}
+&amp; = \lim_{\delta \to 0}\frac{\hat{\theta}_{z_\delta,-z} - \hat{\theta}}{\delta} \\<br>
+&amp; = \lim_{\delta \to 0}\frac{
+-\frac{1}{n}H_{\hat{\theta}}^{-1}[\nabla_x\nabla_\theta L(z,\hat{\theta})]\delta
+}
+{\delta} \\<br>
+&amp; = \lim_{\delta \to 0} - \frac{
+H_{\hat{\theta}}^{-1}[\nabla_x\nabla_\theta L(z,\hat{\theta})]\delta
+}
+{\delta \color{average}{n} } \\<br>
+&amp; = \lim_{\delta \to 0} - \frac{
+H_{\hat{\theta}}^{-1}[\nabla_x\nabla_\theta L(z,\hat{\theta})]\delta
+}
+{\delta} \\<br>
+&amp; = - H_{\hat{\theta}}^{-1}[\nabla_x\nabla_\theta L(z,\hat{\theta})] \\<br>
+\end{aligned}
+\end{equation}</p>
+<p>Using this equation, we could get:</p>
+<p>\begin{equation*}
+\begin{aligned}
+I_{pert,loss}(z, z_{test})^\top
+&amp; = \left. \frac{d L(z_{test}, \hat{\theta}_{z_\delta,-z})}{d \delta} \right|_{\delta=0} \\<br>
+&amp; = \left. \frac{d L(z_{test}, \hat{\theta}_{z_\delta,-z})}{d \theta}
+\frac{d \theta}{d \delta} \right|_{\delta=0} \\<br>
+&amp; = \nabla_\theta L(z_{test},\hat{\theta})^\top \left\{ - H_{\hat{\theta}}^{-1}[\nabla_x\nabla_\theta L(z,\hat{\theta})] \right\} \\<br>
+&amp; = - \nabla_\theta L(z_{test},\hat{\theta})^\top  H_{\hat{\theta}}^{-1}[\nabla_x\nabla_\theta L(z,\hat{\theta})]
+\end{aligned}
+\end{equation*}</p>
+		</div>
+
+
+		<div class="post__meta meta" style="text-align: left;">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2020-02-26T21:41:11-08:00">2020-02-26</time>
+</div>
+</div>
+		
+	</article>
+</main>
+
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/posts/formulate-the-adversarial-attacking-training/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">Formulate the adversarial attacking &amp; training</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2020 Lin Chen.
+			<span class="footer__copyright-credits">Generated by <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> with <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

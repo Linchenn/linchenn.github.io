@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Lin Chen</title>
-    <link>/posts/</link>
-    <description>Recent content in Posts on Lin Chen</description>
+    <title>influence function on Lin Chen</title>
+    <link>/tags/influence-function/</link>
+    <description>Recent content in influence function on Lin Chen</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 26 Feb 2020 21:41:11 -0800</lastBuildDate>
     
-	<atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/influence-function/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,15 +18,6 @@
       
       <guid>/posts/influence_function/</guid>
       <description>&lt;p&gt;When reading &lt;a href=&#34;https://arxiv.org/abs/1703.04730&#34;&gt;Understanding Black-box Predictions via Influence Functions&lt;/a&gt;, I encountered a couple of problems in the derivation. In this article, I will derive two of the equality in details I met in 2.2 Perturbing a traing input section.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Formulate the adversarial attacking &amp; training</title>
-      <link>/posts/formulate-the-adversarial-attacking-training/</link>
-      <pubDate>Mon, 24 Feb 2020 20:37:16 -0800</pubDate>
-      
-      <guid>/posts/formulate-the-adversarial-attacking-training/</guid>
-      <description>&lt;p&gt;In this article, I will introduce a brief mathematical view of the adversarial examples and adversarial training.&lt;/p&gt;</description>
     </item>
     
   </channel>

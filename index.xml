@@ -6,10 +6,19 @@
     <description>Recent content on Lin Chen</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 24 Feb 2020 20:37:16 -0800</lastBuildDate>
+    <lastBuildDate>Wed, 26 Feb 2020 21:41:11 -0800</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Influence Function</title>
+      <link>/posts/influence_function/</link>
+      <pubDate>Wed, 26 Feb 2020 21:41:11 -0800</pubDate>
+      
+      <guid>/posts/influence_function/</guid>
+      <description>&lt;p&gt;When reading &lt;a href=&#34;https://arxiv.org/abs/1703.04730&#34;&gt;Understanding Black-box Predictions via Influence Functions&lt;/a&gt;, I encountered a couple of problems in the derivation. In this article, I will derive two of the equality in details I met in 2.2 Perturbing a traing input section.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Formulate the adversarial attacking &amp; training</title>

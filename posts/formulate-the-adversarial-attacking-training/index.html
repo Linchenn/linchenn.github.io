@@ -59,6 +59,13 @@
 				
 			</a>
 		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/posts/influence_function/">
+				
+				<span class="menu__text">Influence Function</span>
+				
+			</a>
+		</li>
 	</ul>
 </nav>
 
@@ -88,7 +95,7 @@
 <div class="content post__content clearfix">
 			<p>In this article, I will introduce a brief mathematical view of the adversarial examples and adversarial training.</p>
 <h2 id="notation">Notation</h2>
-<p>I will talk about a image classifier on $k$ classes and the final layer is based on softmax function. I will use the following notations:</p>
+<p>I will talk about an image classifier on $k$ classes and the final layer is based on the softmax function. I will use the following notations:</p>
 <ul>
 <li>$h_\theta : \mathcal{X} \rightarrow \mathbb{R}^k$
 <ul>
@@ -147,7 +154,6 @@
 <p>$$ \min_\theta \hat{R}_{\mathrm{adv}}(h_\theta, D_{\mathrm{train}})
 \equiv \min_\theta \frac{1}{|D_{\mathrm{train}}|}\sum_{(x,y)\in D_{\mathrm{train}}} \max_{\delta \in \Delta} \ell(h_\theta(x + \delta)),y) $$</p>
 <p>Since we are using training dataset to optimize the parameters, we use $D_{\mathrm{train}}$ here.</p>
-<!-- raw HTML omitted -->
 		</div>
 
 
@@ -162,6 +168,11 @@
 </main>
 
 
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/posts/influence_function/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">Influence Function</p></a>
+	</div>
+</nav>
 
 
 			</div>

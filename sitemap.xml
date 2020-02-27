@@ -3,27 +3,37 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/posts/influence_function/</loc>
+    <lastmod>2020-02-26T21:41:11-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/influence-function/</loc>
+    <lastmod>2020-02-26T21:41:11-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2020-02-26T21:41:11-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/</loc>
+    <lastmod>2020-02-26T21:41:11-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-02-26T21:41:11-08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/tags/adversarial-training/</loc>
     <lastmod>2020-02-24T20:37:16-08:00</lastmod>
   </url>
   
   <url>
     <loc>/posts/formulate-the-adversarial-attacking-training/</loc>
-    <lastmod>2020-02-24T20:37:16-08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/</loc>
-    <lastmod>2020-02-24T20:37:16-08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/posts/</loc>
-    <lastmod>2020-02-24T20:37:16-08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
     <lastmod>2020-02-24T20:37:16-08:00</lastmod>
   </url>
   
